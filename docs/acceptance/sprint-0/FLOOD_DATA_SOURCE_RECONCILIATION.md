@@ -40,6 +40,16 @@ vector suitability and reproducibility.
 6. The legacy ArcGIS FeatureServer is retained only as forensic evidence of the
    previous result; it is not an authoritative current production source.
 
+## Side-by-side source comparison
+
+| Source | Endpoint / collection or layer | Revision or update evidence | Site features | FZ3 intersects? | EPSG:27700 site result (m²) | Current WMS agreement | Decision |
+|---|---|---|---:|---|---|---|---|
+| Existing ArcGIS FeatureServer | `.../Flood_Map_for_Planning/FeatureServer`; layers 1 FZ3 and 2 FZ2 | Layer source names and edit metadata identify 13 June 2024 data | 13 retrieved / 3 intersecting | No | FZ3 0.0000; FZ2 4,311.4079; FZ1 638.5503 | No | Unsuitable/superseded |
+| Official OGC API - Features | Unified `Flood_Zones_2_3_Rivers_and_Sea` | Linked from metadata revision 20 May 2026; current product schema | 11 retrieved / 4 intersecting | Yes | FZ3 1,823.1995; FZ2 2,678.4460; FZ1 448.3127 | Yes | Selected operational source |
+| Official WFS 2.0 | Qualified unified feature type | Capabilities `updateSequence="83900"` | 11 retrieved / 4 intersecting | Yes | FZ3 1,823.1995; FZ2 2,678.4460; FZ1 448.3127 | Yes | Independent live-vector check |
+| Official downloadable vector | Current dataset page: national GeoPackage ZIP 969 MB; GeoJSON ZIP 4.49 GB. A bounded official WFS GeoJSON vector was downloaded for practical comparison | Dataset revision 20 May 2026; bounded extract matched OGC IDs, attributes and geometry | 11 retrieved / 4 intersecting in bounded extract | Yes | FZ3 1,823.1995; FZ2 2,678.4460; FZ1 448.3127 | Yes | Archival baseline; national file not committed |
+| Official WMS 1.3.0 | `Flood_Zones_2_3_Rivers_and_Sea` | Capabilities `updateSequence="83900"` | Not applicable | Visually yes | No pixel-derived calculation | Reference visual | Visual corroboration only |
+
 ## Published metadata and schema
 
 | Item | Finding |
