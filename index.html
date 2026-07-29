@@ -52,16 +52,17 @@
             <span id="printSiteAddress"></span>
           </div>
           <div id="map" role="application" aria-label="Interactive site boundary and Flood Zone map"></div>
-          <div class="print-footer">
-            <span>Base map © OpenStreetMap contributors. <span id="datasetAttribution">© Environment Agency copyright and/or database right 2025.</span></span>
-            <span>Produced <span id="producedDate"></span> · DFT-0.1.0 / FZ-0.1.0</span>
+          <div class="legend" aria-label="Map legend">
+            <strong>Legend</strong>
+            <span><i class="swatch site"></i>Red-line site boundary</span>
+            <span><i class="swatch z3"></i>Flood Zone 3</span>
+            <span><i class="swatch z2"></i>Flood Zone 2</span>
+            <span><i class="swatch z1"></i>Flood Zone 1 (residual)</span>
           </div>
-        </div>
-        <div class="legend" aria-label="Map legend">
-          <span><i class="swatch site"></i>Red-line site boundary</span>
-          <span><i class="swatch z3"></i>Flood Zone 3</span>
-          <span><i class="swatch z2"></i>Flood Zone 2</span>
-          <span><i class="swatch z1"></i>Flood Zone 1 (residual)</span>
+          <div class="print-footer">
+            <span>Map © OpenStreetMap contributors · Flood data © Environment Agency 2025.</span>
+            <span>Produced <span id="producedDate"></span> · DFT-0.1.1 / FZ-0.1.0 / GEO-0.1.1</span>
+          </div>
         </div>
         <p class="hint">Use the polygon tool on the map to draw; use edit and delete controls to amend it. Polygon, MultiPolygon and valid interior rings are supported on import.</p>
       </div>
@@ -110,5 +111,9 @@
   </main>
   <footer>Drainage &amp; Flood Toolkit · Controlled Sprint 0 prototype · Professional review required</footer>
   <script type="module" src="/src/main.js"></script>
+  <script>
+    window.addEventListener('beforeprint', () => window.dispatchEvent(new Event('resize')));
+    window.addEventListener('afterprint', () => window.dispatchEvent(new Event('resize')));
+  </script>
 </body>
 </html>

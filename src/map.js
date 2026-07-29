@@ -5,17 +5,20 @@ import 'leaflet-draw/dist/leaflet.draw.css';
 
 const defaultView = [52.4, -1.5];
 const styles = {
-  site: { color: '#d51f2b', weight: 3, fillColor: '#ffffff', fillOpacity: 0.08 },
-  zone2: { color: '#007a87', weight: 1.5, fillColor: '#4fc3d7', fillOpacity: 0.38 },
-  zone3: { color: '#1546a0', weight: 1.5, fillColor: '#4f65d7', fillOpacity: 0.5 }
+  site: { pane: 'siteBoundary', color: '#e31a1c', weight: 4, opacity: 1, fillColor: '#ffffff', fillOpacity: 0.04 },
+  zone2: { pane: 'floodZone2', color: '#1875a8', weight: 1.5, opacity: 1, fillColor: '#72c7e7', fillOpacity: 0.68 },
+  zone3: { pane: 'floodZone3', color: '#24176f', weight: 1.5, opacity: 1, fillColor: '#332288', fillOpacity: 0.78 }
 };
 
 export function createMap({ onBoundaryChanged, onBoundaryDeleted }) {
   const map = L.map('map', { zoomControl: true }).setView(defaultView, 6);
   const base = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 19, crossOrigin: true, attribution: '© OpenStreetMap contributors'
+    maxZoom: 19, crossOrigin: true, opacity: 0.58, attribution: '© OpenStreetMap contributors'
   }).addTo(map);
-  const siteLayer = new L.FeatureGroup().addTo(map);
+  map.createPane('floodZone2').style.zIndex = '410';
+  map.createPane('floodZone3').style.zIndex = '420';
+  map.createPane('siteBoundary').style.zIndex = '430';
+  const siteLayer = new L.FeatureGroup([], { pane: 'siteBoundary' }).addTo(map);
   const zone2Layer = new L.GeoJSON(null, { style: styles.zone2 });
   const zone3Layer = new L.GeoJSON(null, { style: styles.zone3 });
   L.control.layers({ OpenStreetMap: base }, { 'Flood Zone 2': zone2Layer, 'Flood Zone 3': zone3Layer }, { collapsed: false }).addTo(map);

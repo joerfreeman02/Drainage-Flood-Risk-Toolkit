@@ -2,7 +2,7 @@ import proj4 from 'proj4';
 import polygonClipping from 'polygon-clipping';
 import { ANALYSIS } from './config.js';
 
-proj4.defs('EPSG:27700', '+proj=tmerc +lat_0=49 +lon_0=-2 +k=0.9996012717 +x_0=400000 +y_0=-100000 +ellps=airy +units=m +no_defs');
+proj4.defs('EPSG:27700', '+proj=tmerc +lat_0=49 +lon_0=-2 +k=0.9996012717 +x_0=400000 +y_0=-100000 +datum=OSGB36 +units=m +no_defs');
 
 const isFinitePair = value => Array.isArray(value) && value.length >= 2 &&
   Number.isFinite(value[0]) && Number.isFinite(value[1]);

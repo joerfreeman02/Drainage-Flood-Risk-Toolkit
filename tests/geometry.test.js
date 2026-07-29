@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
 import { analyseFloodZones, bngBoundingBox, extractSiteGeometry, fromBngMultiPolygon, multiPolygonArea, toBngMultiPolygon, transformGeometry } from '../src/geometry.js';
 
 function ring(x1, y1, x2, y2) {
@@ -129,6 +130,18 @@ test('coordinate transformation round trip is accurate', () => {
   const roundTrip = transformGeometry(bng, 'EPSG:27700', 'EPSG:4326');
   near(roundTrip.coordinates[0], -0.1276, 0.000001);
   near(roundTrip.coordinates[1], 51.5072, 0.000001);
+});
+
+test('EPSG:27700 transformation applies the OSGB36 datum shift', () => {
+  const wgs84 = transformGeometry({ type: 'Point', coordinates: [651409.903, 313177.270] }, 'EPSG:27700', 'EPSG:4326');
+  near(wgs84.coordinates[0], 1.716052, 0.000002);
+  near(wgs84.coordinates[1], 52.657979, 0.000002);
+});
+
+test('approved Aynsworth Avenue boundary preserves the authoritative BNG area', () => {
+  const fixture = JSON.parse(readFileSync(new URL('./fixtures/golden/aynsworth-avenue/site-boundary.geojson', import.meta.url)));
+  const result = analyseFloodZones(fixture, [], []);
+  near(result.siteAreaSqM, 4949.9582, 0.01);
 });
 
 test('area calculation matches a known synthetic 100 m square', () => {

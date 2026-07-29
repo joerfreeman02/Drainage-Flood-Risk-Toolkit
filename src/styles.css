@@ -41,12 +41,13 @@ main { max-width: 1500px; margin: 0 auto; padding: 1rem; }
 .north-arrow { background: rgba(255,255,255,.94); border: 2px solid #303033; width: 38px; height: 55px; display: grid; place-items: center; padding: 3px; color: #111; }
 .north-arrow span { font-size: 1.35rem; line-height: 1; }
 .north-arrow strong { font-size: .8rem; }
-.legend { display: flex; gap: 1rem; flex-wrap: wrap; padding: .7rem 0 .2rem; font-size: .8rem; }
+.legend { position: absolute; z-index: 500; left: 12px; bottom: 24px; display: grid; gap: .35rem; padding: .65rem .75rem; border: 1px solid #3f4a55; background: rgba(255,255,255,.94); box-shadow: 0 1px 5px rgba(0,0,0,.2); font-size: .75rem; }
+.legend strong { color: var(--blue); border-bottom: 1px solid #aab4be; padding-bottom: .25rem; }
 .legend span { display: flex; gap: .38rem; align-items: center; }
 .swatch { width: 23px; height: 13px; border: 2px solid; display: inline-block; }
-.swatch.site { border-color: #d51f2b; background: white; }
-.swatch.z3 { border-color: #1546a0; background: rgba(79,101,215,.65); }
-.swatch.z2 { border-color: #007a87; background: rgba(79,195,215,.5); }
+.swatch.site { border-color: #e31a1c; background: white; }
+.swatch.z3 { border-color: #24176f; background: rgba(51,34,136,.78); }
+.swatch.z2 { border-color: #1875a8; background: rgba(114,199,231,.68); }
 .swatch.z1 { border-color: #697887; background: white; }
 .wide { width: 100%; }
 .status-message { min-height: 2.8rem; padding: .7rem; border-left: 4px solid #718092; background: #f3f5f7; font-size: .88rem; }
@@ -90,24 +91,30 @@ footer { text-align: center; color: var(--muted); font-size: .8rem; padding: 1.5
   #map { min-height: 420px; height: 62vh; }
 }
 .print-preview { background: white; }
-.print-preview .skip-link, .print-preview .hero, .print-preview .project-panel, .print-preview .results-panel, .print-preview .qualification, .print-preview .diagnostics, .print-preview > footer, .print-preview .toolbar, .print-preview .hint, .print-preview .section-heading, .print-preview .leaflet-control-draw { display: none !important; }
-.print-preview main, .print-preview .workspace, .print-preview .map-panel { display: block; max-width: none; margin: 0; padding: 0; border: 0; box-shadow: none; }
-.print-preview .map-frame { border: 1.5px solid #222; margin: 0; }
-.print-preview .print-title { display: grid; padding: 18px 24px; border-bottom: 1px solid #555; font-size: 11pt; }
+.print-preview .skip-link, .print-preview .hero, .print-preview .project-panel, .print-preview .results-panel, .print-preview .qualification, .print-preview .diagnostics, .print-preview > footer, .print-preview .toolbar, .print-preview .hint, .print-preview .section-heading, .print-preview .leaflet-draw, .print-preview .leaflet-control-layers, .print-preview .leaflet-control-zoom, .print-preview .leaflet-control-attribution { display: none !important; }
+.print-preview main { width: min(calc(100vw - 24px), calc((100vh - 24px) * 1.414)); margin: 12px auto; }
+.print-preview main, .print-preview .workspace, .print-preview .map-panel { max-width: none; padding: 0; border: 0; box-shadow: none; }
+.print-preview .workspace, .print-preview .map-panel { display: block; margin: 0; }
+.print-preview .map-frame { display: grid; grid-template-rows: auto minmax(0, 1fr) auto; height: calc(min(100vw / 1.414, 100vh) - 24px); min-height: 560px; border: 1.5px solid #222; margin: 0; overflow: hidden; }
+.print-preview .print-title { display: grid; padding: 12px 18px; border-bottom: 1px solid #555; font-size: 9pt; }
 .print-preview .print-title strong { font-size: 16pt; color: var(--blue); }
-.print-preview #map { height: calc(100vh - 155px) !important; min-height: 520px; }
-.print-preview .print-footer { display: flex; justify-content: space-between; gap: 1rem; padding: 12px 18px; border-top: 1px solid #555; font-size: 8pt; }
-.print-preview .legend { border: 1px solid #555; padding: 10px; margin-top: 10px; }
+.print-preview #map { height: auto !important; min-height: 0; }
+.print-preview .print-footer { display: flex; justify-content: space-between; gap: 1rem; padding: 8px 12px; border-top: 1px solid #555; font-size: 7pt; }
+.print-footer > span:first-child { flex: 1 1 auto; min-width: 0; }
+.print-footer > span:last-child { flex: 0 0 auto; white-space: nowrap; }
+.print-preview .legend { bottom: 48px; left: 12px; }
 .print-preview .exit-print-preview { display: block; position: fixed; z-index: 10000; top: 12px; right: 12px; box-shadow: 0 2px 8px rgba(0,0,0,.3); }
 @media print {
-  @page { size: A4 landscape; margin: 10mm; }
-  body { background: white; }
-  .skip-link, .hero, .project-panel, .results-panel, .qualification, .diagnostics, footer, .toolbar, .hint, .section-heading, .leaflet-control-draw, .exit-print-preview { display: none !important; }
+  @page { size: A4 landscape; margin: 8mm; }
+  html, body { width: 281mm; height: 194mm; margin: 0; overflow: hidden; background: white; }
+  .skip-link, .hero, .project-panel, .results-panel, .qualification, .diagnostics, footer, .toolbar, .hint, .section-heading, .leaflet-draw, .leaflet-control-layers, .leaflet-control-zoom, .leaflet-control-attribution, .exit-print-preview { display: none !important; }
   main, .workspace, .map-panel { display: block; max-width: none; margin: 0; padding: 0; border: 0; box-shadow: none; }
-  .map-frame { border: 1.5px solid #222; margin: 0; }
-  .print-title { display: grid; padding: 6mm 8mm; border-bottom: 1px solid #555; font-size: 11pt; }
-  .print-title strong { font-size: 16pt; color: var(--blue); }
-  #map { height: 155mm !important; min-height: 0; }
-  .print-footer { display: flex; justify-content: space-between; gap: 1rem; padding: 4mm 6mm; border-top: 1px solid #555; font-size: 7pt; }
-  .legend { border: 1px solid #555; padding: 3mm; margin-top: 3mm; }
+  .map-frame { display: grid; grid-template-rows: 22mm minmax(0, 1fr) 10mm; width: 281mm; height: 193mm; border: .5mm solid #222; margin: 0; overflow: hidden; break-inside: avoid; page-break-inside: avoid; }
+  .print-title { position: relative; z-index: 1000; display: grid; padding: 3mm 6mm; border-bottom: .3mm solid #555; background: white; font-size: 8pt; }
+  .print-title strong { font-size: 15pt; color: var(--blue); }
+  #map { height: auto !important; min-height: 0; }
+  .print-footer { position: relative; z-index: 1000; display: flex; justify-content: space-between; align-items: center; gap: 3mm; padding: 2mm 4mm 2mm 3mm; border-top: .3mm solid #555; background: white; font-size: 5.5pt; line-height: 1.2; }
+  .print-footer > span:last-child { margin-right: 5mm; }
+  .leaflet-top.leaflet-right, .leaflet-bottom.leaflet-right { right: 3mm; }
+  .legend { left: 4mm; bottom: 20mm; padding: 2.5mm 3mm; font-size: 7pt; box-shadow: none; }
 }

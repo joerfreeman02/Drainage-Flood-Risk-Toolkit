@@ -1,7 +1,7 @@
 export const VERSIONS = Object.freeze({
-  toolkit: 'DFT-0.1.0',
+  toolkit: 'DFT-0.1.1',
   floodZone: 'FZ-0.1.0',
-  spatialEngine: 'GEO-0.1.0',
+  spatialEngine: 'GEO-0.1.1',
   status: 'Sprint 0 candidate'
 });
 
