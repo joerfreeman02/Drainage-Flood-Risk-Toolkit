@@ -144,6 +144,21 @@ test('approved Aynsworth Avenue boundary preserves the authoritative BNG area', 
   near(result.siteAreaSqM, 4949.9582, 0.01);
 });
 
+test('Aynsworth Avenue authoritative 2026 Flood Zone extract remains reproducible', () => {
+  const boundary = JSON.parse(readFileSync(new URL('./fixtures/golden/aynsworth-avenue/site-boundary.geojson', import.meta.url)));
+  const source = JSON.parse(readFileSync(new URL('./fixtures/golden/aynsworth-avenue/authoritative-flood-zones.geojson', import.meta.url)));
+  const zone2 = source.features.filter(item => item.properties.flood_zone === 'FZ2');
+  const zone3 = source.features.filter(item => item.properties.flood_zone === 'FZ3');
+  const result = analyseFloodZones(boundary, zone2, zone3);
+  near(result.siteAreaSqM, 4949.9582, 0.01);
+  near(result.zones[3].areaSqM, 1823.1995, 0.1);
+  near(result.zones[2].areaSqM, 2678.4460, 0.1);
+  near(result.zones[1].areaSqM, 448.3127, 0.1);
+  near(result.percentageTotal, 100, 0.001);
+  assert.equal(result.sourceFeatureCount, 11);
+  assert.equal(result.intersectingFeatureCount, 4);
+});
+
 test('area calculation matches a known synthetic 100 m square', () => {
   const projected = toBngMultiPolygon(site);
   near(multiPolygonArea(projected), 10000, 0.1);

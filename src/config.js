@@ -1,6 +1,6 @@
 export const VERSIONS = Object.freeze({
-  toolkit: 'DFT-0.1.1',
-  floodZone: 'FZ-0.1.0',
+  toolkit: 'DFT-0.1.2',
+  floodZone: 'FZ-0.1.1',
   spatialEngine: 'GEO-0.1.1',
   status: 'Sprint 0 candidate'
 });
@@ -23,9 +23,10 @@ export const DATASET = Object.freeze({
   crs: 'EPSG:27700',
   licence: 'Open Government Licence',
   attribution: '© Environment Agency copyright and/or database right 2025. All rights reserved.',
-  serviceType: 'ArcGIS Feature Service (vector)',
-  serviceRoot: 'https://environment.data.gov.uk/KB6uNVj5ZcJr7jUP/ArcGIS/rest/services/Flood_Map_for_Planning/FeatureServer',
-  layerIds: { floodZone3: 1, floodZone2: 2 },
+  serviceType: 'OGC API - Features (vector)',
+  serviceRoot: 'https://environment.data.gov.uk/geoservices/datasets/04532375-a198-476e-985e-0579a0a11b47/ogc/features/v1',
+  collection: 'Flood_Zones_2_3_Rivers_and_Sea',
+  serviceSchemaUpdate: '83900',
   pageSize: 1000,
   timeoutMs: 20000
 });

@@ -1,79 +1,77 @@
 # Sprint 0 technical acceptance report
 
-Status: Sprint 0.2 correction validated locally; golden flood-zone comparison is
-not within tolerance and requires Product Owner dataset reconciliation.
+Status: Sprint 0.3 authoritative source reconciliation implemented and
+validated; formal Product Owner and Technical Director decisions remain open.
 
 ## Candidate assessed
 
-- Toolkit `DFT-0.1.1`
-- Flood Zone module `FZ-0.1.0`
+- Toolkit `DFT-0.1.2`
+- Flood Zone module `FZ-0.1.1`
 - Spatial engine `GEO-0.1.1`
 - Branch `sprint-0/flood-zone-spatial-prototype`
-- Golden site `East Herts DC, Bishop’s Stortford, Aynsworth Avenue, 5351`
+- Golden site `East Herts DC, Bishop's Stortford, Aynsworth Avenue, 5351`
 
-## Sprint 0.2 corrections
+## Retained Sprint 0.2 corrections
 
-- The flood layers use stronger, distinct blue values over a subdued base map.
-  Dedicated panes keep the red-line boundary above both flood layers.
-- The compact legend is part of the map figure and uses the exact layer colours.
-- Print output is constrained to one fixed A4-landscape figure containing title,
-  project/site fields, map, red line, flood zones, legend, north arrow, scale,
-  attribution, date and all module versions.
-- EPSG:27700 now applies the OSGB36 datum shift. The earlier ellipsoid-only
-  definition displaced live WGS84 features by approximately 100 metres.
+- Strong, distinct blue Flood Zone colours remain below the red-line boundary.
+- The compact legend remains part of the fixed A4-landscape map figure.
+- EPSG:27700 continues to apply the OSGB36 datum shift.
+- Polygon/MultiPolygon interior rings and exclusive FZ3 → FZ2 → residual FZ1
+  calculation remain unchanged.
+
+## Sprint 0.3 source reconciliation
+
+The current Environment Agency dataset record, product description, OGC API -
+Features, WFS 2.0, downloadable-vector metadata and WMS 1.3.0 were checked.
+The selected analytical source is the unified current OGC collection
+`Flood_Zones_2_3_Rivers_and_Sea`.
+
+The previous ArcGIS service exposes separate layer source names dated 13 June
+2024. It is superseded for production calculations. The OGC and WFS bounded
+extracts returned the same 11 IDs, properties and geometries. WMS visually
+corroborated the current FZ3/FZ2 pattern; no calculation used pixels.
+
+See [Flood-data source reconciliation](FLOOD_DATA_SOURCE_RECONCILIATION.md) for
+the hierarchy, endpoints, schema, exact query envelopes and forensic findings.
 
 ## Aynsworth Avenue golden comparison
 
-The exact 19-vertex polygon from `2026.07_GIS/ATLAS Files/SiteBoundary.shp` was
-converted from OSGB36/British National Grid to WGS84 without redrawing it. Its
-direct BNG area is 4,949.9582 m². Live data were retrieved on 29 July 2026 from
-the configured Environment Agency Flood Map for Planning Feature Service
-(configured revision 20 May 2026).
+The exact approved 19-vertex polygon was used without redrawing. Its professional
+EPSG:27700 area is 4,949.9582 m². The current authoritative result is:
 
-Tolerance: the larger of 1.0% of the reference value or 10 m² for areas, and
-1.0 percentage point for percentages. This is a proportionate engineering
-comparison tolerance for a 0.495 ha site; it is not a survey-accuracy statement.
+| Classification | Toolkit area (m²) | Toolkit site % | Company reference area (m²) | Reference site % | Area difference (m²) | Percentage-point difference |
+|---|---:|---:|---:|---:|---:|---:|
+| Total site | 4,949.9582 | 100.0000% | 4,950.0 | 100.0% | -0.0418 | 0.0000 |
+| Flood Zone 3 | 1,823.1995 | 36.8326% | 1,594.8 | 32.2% | +228.3995 | +4.6326 |
+| Flood Zone 2 | 2,678.4460 | 54.1105% | 2,663.4 | 53.8% | +15.0460 | +0.3105 |
+| Flood Zone 1 | 448.3127 | 9.0569% | 691.8 | 14.0% | -243.4873 | -4.9431 |
 
-| Classification | Toolkit area (m²) | Reference area (m²) | Absolute difference (m²) | Difference (%) | Toolkit site (%) | Reference site (%) | Absolute percentage-point difference |
-|---|---:|---:|---:|---:|---:|---:|---:|
-| Total site | 4,949.9582 | 4,950.0 | 0.0418 | 0.0008% | 100.0% | 100.0% | 0.0 |
-| Flood Zone 3 | 0.0000 | 1,594.8 | 1,594.8000 | 100.0000% | 0.0% | 32.2% | 32.2 |
-| Flood Zone 2 | 4,311.4079 | 2,663.4 | 1,648.0079 | 61.8770% | 87.1% | 53.8% | 33.3 |
-| Flood Zone 1 | 638.5503 | 691.8 | 53.2497 | 7.6978% | 12.9% | 14.0% | 1.1 |
-
-The site area is within tolerance. The flood classifications are not. Geometry
-and CRS handling were checked: correcting the omitted OSGB36 datum shift fixed
-the positional error and produced the authoritative site area. The remaining
-material discrepancy is consistent with a data-source/revision difference: the
-supplied example is pixelated and shows Flood Zone 3 extending across the site,
-whereas the current live vector feature geometry does not intersect the site.
-The spatial precedence logic was not altered speculatively.
+Against the Sprint 0.2 comparison tolerance (the larger of 1% or 10 m², plus
+1 percentage point), total site and Flood Zone 2 pass; Flood Zones 3 and 1 do
+not. The company figures remain recorded as a historical benchmark. They were
+not treated as authoritative current geometry or used to force the output.
 
 ## Executed evidence
 
-- All 30 deterministic tests passed, including published-coordinate OSGB36
-  transformation and authoritative Aynsworth boundary-area regressions.
-- c8 produced text, LCOV and JSON-summary coverage.
-- A live Environment Agency smoke test passed.
-- The browser imported the exact converted Aynsworth geometry and completed a
-  live analysis: 4,949.9582 m²; Flood Zone 3 0.0%; Flood Zone 2 87.1%; Flood
-  Zone 1 12.9%; raw total 100.000000%; 3 intersecting of 13 retrieved features.
-- UK location search returned a location and did not create a boundary.
-- Polygon, MultiPolygon and polygon-with-hole acceptance paths were exercised
-  through localhost-only synthetic fixtures.
-- Unsupported geometry and multiple unrelated features were rejected without a
-  percentage result.
-- Copy, rerun, clear, layer-toggle, edit activation and delete controls were
-  exercised.
-- The populated fixed A4-landscape map-layout preview was visually inspected.
-  A browser-generated PDF was confirmed as one page, rendered back to PNG and
-  visually inspected with project/site details, red line, Flood Zone layers,
-  compact legend, north arrow, scale, attribution, date and versions visible.
-  Interactive editing/layer controls were absent and no browser console errors
-  or warnings were reported.
+- Deterministic tests cover OGC classification, mixed FZ2/FZ3 responses,
+  next-link pagination, duplicate IDs, empty responses, HTTP/network/timeout
+  failures, malformed schema, unsafe/repeated pagination, overlap precedence,
+  fragments, interior rings and the committed authoritative golden extract.
+- A live OGC service smoke test exercises the configured source.
+- Browser acceptance imports the exact golden boundary and retrieves 11 current
+  features, four intersecting, producing 36.8% FZ3, 54.1% FZ2 and 9.1% FZ1.
+- The populated map, layer order, controls, diagnostics and print-preview DOM
+  are inspected in a real browser.
+- A single-page A4-landscape PDF evidence artifact was generated from the
+  inspected preview, rendered with Poppler and visually checked for the title,
+  site, map, red line, zones, legend, north arrow, scale, attribution, date and
+  versions.
+- Lint, deterministic tests, coverage, build and aggregate check are required
+  before the candidate is pushed.
 
 ## Evidence index
 
+- [Flood-data source reconciliation](FLOOD_DATA_SOURCE_RECONCILIATION.md)
 - [Automated browser results](AUTOMATED_BROWSER_TEST_RESULTS.md)
 - [CI verification](CI_VERIFICATION.md)
 - [Coverage baseline](COVERAGE_BASELINE.md)
@@ -83,18 +81,16 @@ The spatial precedence logic was not altered speculatively.
 - [Sanitised live diagnostic summary](diagnostics/live-browser-summary.json)
 - [Screenshots](screenshots/)
 
-## Documentation review
+## Documentation and boundary review
 
-The README, changelog, release notes, Sprint 0 specification, test plan, data
-sources, reuse register, known limitations, repository instructions and all four
-Sprint 0 ADRs were reviewed. No Sprint 1 data or conclusions were added. The
-20 May 2026 dataset revision remains recorded as configured metadata. Aynsworth
-Avenue supersedes Colney Heath as the primary Sprint 0 golden case.
+The changelog, data sources, known limitations, acceptance evidence, repository
+instructions, reuse register and Sprint 0 ADR boundaries were reviewed. No
+Sprint 1 data or professional planning conclusion was added. Live-data code
+remains isolated from geometry and UI. The shared boundaries did not materially
+change, so no ADR or reuse-register entry was required.
 
 ## Engineering conclusion
 
-The presentation and CRS corrections are suitable for draft-PR technical review,
-but the live flood-zone result is not acceptable against the supplied reference
-within the stated tolerance. Product Owner confirmation of the authoritative
-flood dataset/revision is required before golden acceptance. Formal Product Owner
-and Technical Director decisions remain outstanding.
+The current authoritative source is reproducible across the distinct OGC API,
+WFS and WMS roles. The adapter migration and golden regression are suitable for
+draft-PR technical review. Formal governance acceptance remains outstanding.

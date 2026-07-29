@@ -8,8 +8,11 @@ export function diagnosticsSnapshot(state) {
     endpoint: DATASET.serviceRoot,
     dataset: {
       title: DATASET.title, metadataId: DATASET.metadataId,
-      revisionDate: DATASET.revisionDate, retrievalTimestamp: state.retrievedAt || null
+      revisionDate: DATASET.revisionDate, serviceType: DATASET.serviceType,
+      collection: DATASET.collection, serviceSchemaUpdate: DATASET.serviceSchemaUpdate,
+      retrievalTimestamp: state.retrievedAt || null
     },
+    sourceSummary: state.source?.sourceSummary || null,
     crs: CRS,
     siteGeometryType: state.siteGeometry?.type || null,
     siteAreaSqM: state.result?.siteAreaSqM || null,
