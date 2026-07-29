@@ -110,6 +110,23 @@ function clearBoundary() {
   renderDiagnostics();
 }
 
+const acceptanceTestEnabled = ['localhost', '127.0.0.1'].includes(window.location.hostname)
+  && new URLSearchParams(window.location.search).has('acceptance-test');
+if (acceptanceTestEnabled) {
+  const fixtureName = new URLSearchParams(window.location.search).get('acceptance-test');
+  Object.defineProperty(window, '__DFT_ACCEPTANCE__', {
+    value: Object.freeze({ acceptBoundary, clearAnalysis, clearBoundary, runAnalysis }),
+    configurable: false,
+    enumerable: false,
+    writable: false
+  });
+  import('./acceptance-fixtures.js').then(({ ACCEPTANCE_FIXTURES }) => {
+    if (ACCEPTANCE_FIXTURES[fixtureName]) {
+      acceptBoundary(ACCEPTANCE_FIXTURES[fixtureName], `Synthetic ${fixtureName} fixture`);
+    }
+  });
+}
+
 async function searchLocation() {
   const query = byId('search').value.trim();
   if (!query) return status('Enter a postcode, address or place to search.', 'error');
