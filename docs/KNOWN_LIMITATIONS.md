@@ -12,5 +12,8 @@
 - Flood Zone 1 is calculated as residual and is not retrieved as a source feature.
 - No climate change, functional floodplain/FZ3b or non-river/sea risk source is assessed.
 - Browser printing depends on the selected browser/printer PDF engine; direct PNG export is deliberately omitted.
+- The committed technical evidence includes an inspected print-layout preview.
+  Native print-dialog automation and a saved PDF remain a Product Owner check
+  because the controlled browser surface cannot select a local PDF destination.
 - No offline mode or service worker is provided.
 - Colney Heath is not verified because its red line and expected result have not been supplied.

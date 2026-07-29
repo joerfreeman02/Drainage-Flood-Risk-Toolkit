@@ -1,0 +1,26 @@
+{
+  "label": "Synthetic Sprint 0 Acceptance Site",
+  "siteDescription": "Generic central London test extent",
+  "candidateVersions": {
+    "toolkit": "DFT-0.1.0",
+    "floodZone": "FZ-0.1.0",
+    "spatialEngine": "GEO-0.1.0"
+  },
+  "dataset": {
+    "title": "Flood Map for Planning - Flood Zones",
+    "revisionDate": "2026-05-20",
+    "analysisCrs": "EPSG:27700"
+  },
+  "result": {
+    "siteAreaSqM": 15999999.990737915,
+    "floodZone3DisplayPercentage": 52.1,
+    "floodZone2DisplayPercentage": 1.3,
+    "floodZone1DisplayPercentage": 46.6,
+    "rawPercentageTotal": 99.99999999980926,
+    "sourceFeatureCount": 3,
+    "intersectingFeatureCount": 3,
+    "warnings": [],
+    "latestError": null
+  },
+  "qualification": "Synthetic technical evidence only; not a professional golden case or Product Owner acceptance."
+}

@@ -15,3 +15,8 @@ All notable changes are recorded here.
 - Synthetic deterministic regression suite and mocked service tests.
 - Colney Heath golden-test placeholder without fabricated geometry or expected values.
 - CI and controlled GitHub Pages workflow.
+- Informational c8 coverage reporting with text, LCOV and JSON-summary output.
+- CI coverage artifact upload and manual-only Pages deployment trigger.
+- Weekly grouped Dependabot checks for npm and GitHub Actions dependencies.
+- Localhost-only synthetic browser-acceptance fixtures and a committed Sprint 0
+  technical evidence pack.

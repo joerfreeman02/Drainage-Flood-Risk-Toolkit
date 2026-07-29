@@ -6,4 +6,7 @@ This build implements the first Flood Zone spatial workflow using the current En
 
 The live Environment Agency and geocoding services remain external runtime dependencies. The Colney Heath golden case remains intentionally unverified until the authoritative red line and manually checked expected result are supplied.
 
-See `docs/KNOWN_LIMITATIONS.md` and `docs/TEST_PLAN.md` before acceptance.
+The candidate version numbers are unchanged by the CI, coverage, dependency
+governance and acceptance-evidence additions. See `docs/KNOWN_LIMITATIONS.md`,
+`docs/TEST_PLAN.md` and `docs/acceptance/sprint-0/ACCEPTANCE_REPORT.md` before
+acceptance.

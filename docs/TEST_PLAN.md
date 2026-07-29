@@ -19,6 +19,12 @@ Run `pnpm test`. The Node test runner covers:
 
 Fixtures are synthetic or mocked. Default tests do not require network access.
 
+Run `pnpm test:coverage` for the same deterministic suite with text, LCOV and
+JSON-summary coverage output. The informational scope covers the deterministic
+spatial engine, Environment Agency adapter, narrative generator and central
+configuration. Browser-only UI modules are assessed separately in the real-browser
+matrix; no blocking threshold is applied.
+
 ## Optional external check
 
 Run `pnpm test:live`. This makes a bounded request to the configured Environment Agency service. Failure does not invalidate deterministic engine results but must be reported accurately.
@@ -41,6 +47,9 @@ At minimum:
 12. Clear analysis, rerun, and reset the boundary.
 13. Simulate network failure and confirm it is not presented as no intersection.
 14. Open browser print preview and inspect A4 landscape extent, title, map, legend, scale, north arrow, attribution, date and versions.
+
+The executed Sprint 0 automation and any remaining manual items are recorded in
+`acceptance/sprint-0/AUTOMATED_BROWSER_TEST_RESULTS.md`.
 
 ## Golden test
 
