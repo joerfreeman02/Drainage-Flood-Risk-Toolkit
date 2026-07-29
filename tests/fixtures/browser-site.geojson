@@ -1,0 +1,16 @@
+{
+  "type": "Feature",
+  "properties": {
+    "name": "Synthetic central-London browser verification envelope — not a professional golden case"
+  },
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [[
+      [-0.15627633373501637, 51.485960917799574],
+      [-0.09869356814214071, 51.485041263870144],
+      [-0.09719638597611888, 51.520991435084504],
+      [-0.15482443139398133, 51.52191226671682],
+      [-0.15627633373501637, 51.485960917799574]
+    ]]
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "status": "awaiting-director-supplied-boundary-and-expected-result",
+  "siteAreaSqM": null,
+  "percentages": { "floodZone1": null, "floodZone2": null, "floodZone3": null },
+  "permittedTolerancePercent": null,
+  "expectedNarrative": null,
+  "datasetRevision": null
+}
