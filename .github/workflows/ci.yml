@@ -1,7 +1,12 @@
 name: CI
 on:
   push:
+    branches:
+      - main
+      - sprint-0/flood-zone-spatial-prototype
   pull_request:
+    branches:
+      - main
 permissions:
   contents: read
 jobs:
@@ -18,5 +23,12 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - run: pnpm lint
-      - run: pnpm test
+      - run: pnpm test:coverage
       - run: pnpm build
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v4
+        with:
+          name: sprint-0-coverage
+          path: coverage/
+          if-no-files-found: error
+          retention-days: 30
