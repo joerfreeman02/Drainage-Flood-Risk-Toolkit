@@ -45,9 +45,15 @@ Imports support one GeoJSON `Polygon` or `MultiPolygon`, including valid holes, 
 ```sh
 pnpm lint
 pnpm test
+pnpm test:coverage
 pnpm build
 pnpm check
 ```
+
+`pnpm test:coverage` writes text, LCOV and JSON-summary reports to the ignored
+`coverage/` directory. CI uploads that directory as the `sprint-0-coverage`
+artifact. The baseline and scope are recorded in
+[`docs/acceptance/sprint-0/COVERAGE_BASELINE.md`](docs/acceptance/sprint-0/COVERAGE_BASELINE.md).
 
 The optional live service check is intentionally excluded from the deterministic suite:
 
@@ -73,7 +79,9 @@ See `docs/DATA_SOURCES.md` for the endpoint and limitations.
 
 ## Deployment
 
-`pnpm build` writes the static build to `dist/`. CI validates lint, tests and build. The Pages workflow deploys only after its own quality job passes and only where repository settings and the private-repository plan permit GitHub Pages.
+`pnpm build` writes the static build to `dist/`. CI validates lint, deterministic
+tests with coverage, and build. The Pages workflow is manual-only during active
+prototype development; it does not deploy on a push.
 
 ## Versioning
 
@@ -86,3 +94,6 @@ All are Sprint 0 candidates, not approved production baselines.
 ## Known limitations
 
 See `docs/KNOWN_LIMITATIONS.md`. In particular, live service availability and browser CORS remain external dependencies; search uses public Nominatim; self-intersection detection is deliberately limited to obvious simple-ring crossings; and the Colney Heath professional golden test awaits the Director-supplied boundary and expected manual result.
+
+Sprint 0 technical acceptance evidence is indexed at
+[`docs/acceptance/sprint-0/ACCEPTANCE_REPORT.md`](docs/acceptance/sprint-0/ACCEPTANCE_REPORT.md).

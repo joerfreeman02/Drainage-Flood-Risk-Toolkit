@@ -17,16 +17,33 @@ Official metadata: `https://environment.data.gov.uk/dataset/04532375-a198-476e-9
 
 ## Selected service
 
-The prototype uses the official Environment Agency ArcGIS Feature Service:
+The prototype uses the current official Environment Agency OGC API - Features
+collection:
 
-`https://environment.data.gov.uk/KB6uNVj5ZcJr7jUP/ArcGIS/rest/services/Flood_Map_for_Planning/FeatureServer`
+`https://environment.data.gov.uk/geoservices/datasets/04532375-a198-476e-985e-0579a0a11b47/ogc/features/v1/collections/Flood_Zones_2_3_Rivers_and_Sea/items`
 
-- layer 1: Flood Zone 3;
-- layer 2: Flood Zone 2.
+The unified collection classifies polygons through `flood_zone` (`FZ2` or
+`FZ3`) and retains `origin` and `flood_source`. Its storage CRS is EPSG:27700;
+the browser requests bounded CRS84 GeoJSON and transforms professional
+calculations back to EPSG:27700.
 
-This is a proper vector feature service with polygon geometries, EPSG:27700 source reference, GeoJSON query output, server-side bounding-box intersection and paging. It was selected over WMS because analysis must never derive coverage from pixels. The dataset also publishes WFS and OGC API Features; the adapter boundary permits migration if operational testing demonstrates that service is more reliable.
+The dataset's WFS 2.0 service returned identical feature IDs, attributes and
+geometry for the golden-site extract and is retained as an independent vector
+check/fallback candidate. WMS is used only for visual corroboration because
+analysis must never derive coverage from pixels. The national GeoPackage and
+GeoJSON ZIPs remain the archival download baseline but are too large for
+routine browser operation.
 
-Requests use the site BNG envelope plus 50 m, `inSR=27700`, `outSR=4326`, intersection filtering, 1,000-feature pages and a 20-second shared timeout. The adapter validates every FeatureCollection and Polygon/MultiPolygon before returning provider-neutral data.
+Requests use the site BNG envelope plus 50 m transformed to an enclosing CRS84
+bbox, 1,000-feature pages and a 20-second timeout. The adapter follows explicit
+same-origin `next` links, de-duplicates stable IDs and validates every
+FeatureCollection, Polygon/MultiPolygon and `flood_zone` value before returning
+provider-neutral data.
+
+The previously configured ArcGIS FeatureServer exposes separate June 2024
+source layers and is not used for production calculations. The complete
+selection evidence is in
+`docs/acceptance/sprint-0/FLOOD_DATA_SOURCE_RECONCILIATION.md`.
 
 ## Meaning and limitations
 

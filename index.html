@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#002060">
+  <meta name="description" content="Controlled Flood Zone spatial analysis prototype for drainage and flood consultancy.">
+  <title>Drainage &amp; Flood Toolkit — Flood Zones</title>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+  <header class="hero">
+    <div>
+      <p class="eyebrow">Professional drainage and flood consultancy workflow</p>
+      <h1>Drainage &amp; Flood Toolkit</h1>
+      <p>Flood Map for Planning — Flood Zone spatial prototype</p>
+    </div>
+    <div class="build"><strong id="version"></strong><span id="buildInfo"></span></div>
+  </header>
+  <main id="main">
+    <section class="project-panel" aria-labelledby="project-heading">
+      <div class="section-heading"><div><p class="step">01</p><h2 id="project-heading">Project and site</h2></div><span class="candidate">Sprint 0 candidate</span></div>
+      <div class="form-grid">
+        <label>Project name<input id="projectName" autocomplete="organization" placeholder="e.g. Land north of High Street"></label>
+        <label>Site address<input id="siteAddress" autocomplete="street-address" placeholder="Site address or description"></label>
+        <div class="button-row"><button id="saveProject">Save project</button><button id="clearProject" class="secondary">Clear project</button></div>
+      </div>
+      <div class="search-row">
+        <label for="search">Postcode or location search</label>
+        <div><input id="search" placeholder="e.g. AL4 0NP or Colney Heath"><button id="searchButton">Find location</button></div>
+        <p>Search centres the map only. It never substitutes a point or buffer for the red-line boundary.</p>
+      </div>
+    </section>
+
+    <section class="workspace" aria-label="Flood Zone assessment workspace">
+      <div class="map-panel">
+        <div class="section-heading"><div><p class="step">02</p><h2>Site boundary and map</h2></div></div>
+        <div class="toolbar">
+          <input id="boundaryFile" type="file" accept=".json,.geojson,application/geo+json,application/json" hidden>
+          <button id="importButton">Import GeoJSON</button>
+          <button id="fitBoundary" class="secondary">Fit boundary</button>
+          <button id="clearBoundary" class="secondary">Clear / reset</button>
+          <button id="previewPrint" class="secondary">Preview map layout</button>
+          <button id="printMap" class="secondary">Print / Save Map</button>
+        </div>
+        <div class="map-frame">
+          <button id="exitPrintPreview" class="exit-print-preview" hidden>Exit map preview</button>
+          <div class="print-title">
+            <strong id="printProject">Flood Map for Planning — Site Assessment</strong>
+            <span>Red-line site boundary and present-day Flood Zones</span>
+            <span id="printProjectName"></span>
+            <span id="printSiteAddress"></span>
+          </div>
+          <div id="map" role="application" aria-label="Interactive site boundary and Flood Zone map"></div>
+          <div class="legend" aria-label="Map legend">
+            <strong>Legend</strong>
+            <span><i class="swatch site"></i>Red-line site boundary</span>
+            <span><i class="swatch z3"></i>Flood Zone 3</span>
+            <span><i class="swatch z2"></i>Flood Zone 2</span>
+            <span><i class="swatch z1"></i>Flood Zone 1 (residual)</span>
+          </div>
+          <div class="print-footer">
+            <span>Map © OpenStreetMap contributors · Flood data © Environment Agency 2025.</span>
+            <span>Produced <span id="producedDate"></span> · DFT-0.1.2 / FZ-0.1.1 / GEO-0.1.1</span>
+          </div>
+        </div>
+        <p class="hint">Use the polygon tool on the map to draw; use edit and delete controls to amend it. Polygon, MultiPolygon and valid interior rings are supported on import.</p>
+      </div>
+
+      <aside class="results-panel" aria-labelledby="results-heading">
+        <div class="section-heading"><div><p class="step">03</p><h2 id="results-heading">Analysis results</h2></div></div>
+        <button id="analyse" class="wide">Retrieve data &amp; analyse</button>
+        <div id="loading" class="loading" hidden><span></span>Retrieving and calculating…</div>
+        <p id="status" class="status-message" aria-live="polite"></p>
+        <div id="resultsEmpty" class="empty-state">No result yet. A percentage is produced only after a valid boundary and successful vector-data retrieval.</div>
+        <div id="resultsContent" hidden>
+          <dl class="summary"><div><dt>Site area</dt><dd id="siteArea"></dd></div><div><dt>Percentage check</dt><dd id="percentageCheck"></dd></div></dl>
+          <table>
+            <thead><tr><th>Classification</th><th>Area</th><th>Site</th></tr></thead>
+            <tbody>
+              <tr><th>Flood Zone 3</th><td id="z3Area"></td><td id="z3Pct"></td></tr>
+              <tr><th>Flood Zone 2</th><td id="z2Area"></td><td id="z2Pct"></td></tr>
+              <tr><th>Flood Zone 1</th><td id="z1Area"></td><td id="z1Pct"></td></tr>
+            </tbody>
+          </table>
+          <dl class="metadata">
+            <div><dt>Dataset</dt><dd id="datasetTitle"></dd></div>
+            <div><dt>Dataset details</dt><dd id="datasetMeta"></dd></div>
+            <div><dt>Retrieved</dt><dd id="retrievalDate"></dd></div>
+            <div><dt>Features</dt><dd id="featureCount"></dd></div>
+            <div><dt>Method</dt><dd id="calculationMethod"></dd></div>
+          </dl>
+          <h3>Warnings</h3><ul id="warnings" class="warnings"></ul>
+          <label for="narrative"><strong>Report-ready narrative</strong></label>
+          <textarea id="narrative" rows="9" readonly></textarea>
+          <div class="button-row"><button id="copyNarrative">Copy narrative</button><button id="rerun" class="secondary">Rerun analysis</button><button id="clearAnalysis" class="secondary">Clear analysis</button></div>
+        </div>
+      </aside>
+    </section>
+
+    <section class="qualification">
+      <h2>Dataset qualification</h2>
+      <p>Flood Zone 1 is the residual area outside Flood Zones 2 and 3. The Environment Agency dataset indicates present-day river and sea Flood Zones for planning and ignores the benefits of flood defences. It indicates risk to an area and is not a property-specific assessment. The consultant must confirm suitability for the intended professional use.</p>
+    </section>
+    <details class="diagnostics">
+      <summary>Consultant diagnostics</summary>
+      <p>Contains versions, endpoint, dataset details, retrieval information, CRS, feature totals, tolerance check, warnings and the latest error. It contains no secrets or raw service response.</p>
+      <button id="copyDiagnostics">Copy diagnostics</button>
+      <pre id="diagnosticsText"></pre>
+    </details>
+  </main>
+  <footer>Drainage &amp; Flood Toolkit · Controlled Sprint 0 prototype · Professional review required</footer>
+  <script type="module" src="/src/main.js"></script>
+  <script>
+    window.addEventListener('beforeprint', () => window.dispatchEvent(new Event('resize')));
+    window.addEventListener('afterprint', () => window.dispatchEvent(new Event('resize')));
+  </script>
+</body>
+</html>
